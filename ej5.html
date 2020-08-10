@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Web de gestión de alfombras</h1>
+    <!--
+        Ejercicio: Esta web está incompleta, quién la desarrolló dejó todo a medias. 
+        Se trata de terminarla, sustituir lo que el que la empezó hizo mal,
+        eliminar lo que ya no es necesario (ya sea código HTML o JavaScript), 
+        añadir la funcionalidad y las funciones que faltan, y programar los condicionales,
+        bucles, variables, arrays, etc... necesarias para que funcione como debería.
+        Funcionamiento: 
+         - La aplicación debe pintar la información de una serie de alfombras: 
+           Debe mostrar su país de origen, su precio y si está en stock o no.
+        - El usuario puede rellenar los campos, y cuando pulse "añadir", se deben 
+          añadir estos valores al listado
+        - Cuando pulse "borrar todo", debemos eliminar el array con algunos de los métodos
+          indicados en este hilo de la web Stack Overflow: 
+            https://stackoverflow.com/questions/1232040/how-do-i-empty-an-array-in-javascript
+        - Añadir un botón que pueda indicar la cantidad de alfombras que hay en el campo
+            cuyo id="input_total"
+        - Añadir otro botón que calcule el total de la suma de los precios
+        -->
+    <br><label>Pais:</label><input id="input_pais" type="text" placeholder="Pais de origen"/>
+    <br><label>Precio:</label><input id="input_precio" type="number" placeholder="Precio"/>
+    <br><label>En stock:</label><input id="input_stock" type="checkbox"/>
+    <br>
+    <input id="button_add" type="button" value="Añadir"/>
+    <input id="button_total" type="button" value="Calcular total Precios"/>
+    <input id="button_total_alfombras" type="button" value="Calcular total Alfombras"/>
+    <input id="button_clean" type="button" value="Borrar todo"/>
+    <h2>Listado de alfombras:</h2>
+    <br><label>Total de alfombras:</label><input id="input_total" type="text" value=""/>
+    <br><label>Total Precio:</label><input id="input_total_precio" type="text" value=""/>
+
+    
+    <table>
+        <thead>
+            <tr>
+                <th> Pais </th>
+                <th> Precio </th>
+                <th> En stock </th>
+            </tr>
+        </thead>
+        <tbody id="tbody_alfombras">
+            <tr>
+              <td>  </td>
+              <td>  </td>
+              <td>  </td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        var tbodyAlfombras, inputPais, buttonAdd;
+        var paises, precios;
+
+        inicializar();
+ 
+        function inicializar() {
+            paises = [];
+            precios = [];
+            stock = [];
+            contador = 0;
+            tbodyAlfombras = document.getElementById("tbody_alfombras");
+            inputPais = document.getElementById("input_pais");
+            inputPrecio = document.getElementById("input_precio");
+            buttonAdd = document.getElementById("button_add");
+            inputStock = document.getElementById("input_stock");
+            buttonTotal = document.getElementById("button_total");
+            inputTotalPrecio = document.getElementById("input_total_precio");
+            inputTotalAlfombras = document.getElementById("input_total");
+            buttonBorrar = document.getElementById("button_clean");
+            buttonTotalAlfombras = document.getElementById("button_total_alfombras");
+            
+            
+            buttonAdd.onclick = addAlfombra;
+            buttonTotal.onclick = calcularTotal;
+            buttonBorrar.onclick = borrarTodo;
+            buttonTotalAlfombras.onclick = totalAlfombras;
+        }    
+        
+        function createRow(){
+            var htmlTR = "";
+            htmlTR += "<td> " + paises[contador] + " </td>";
+            htmlTR += "<td> " + precios[contador] + " € </td>";
+            htmlTR += "<td>" + stock[contador] +"</td>";
+
+            tbodyAlfombras.innerHTML += htmlTR;
+        }
+          
+        
+        function addAlfombra() {
+            paises.push(inputPais.value);
+            precios.push(inputPrecio.value);
+            if(inputStock.checked){
+                stock.push("YES")
+            }else{
+                stock.push("NO");
+            }
+            createRow() ;
+            contador++;
+        }
+
+        function calcularTotal(){
+             total = precios.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
+
+             inputTotalPrecio.value = total;
+        }
+
+        function borrarTodo(){
+          
+            tbodyAlfombras.innerHTML="";
+            inputTotalPrecio.value="";
+            inputTotalAlfombras.value="";
+        }
+
+        function totalAlfombras(){
+            inputTotalAlfombras.value = precios.length;
+        }
+    </script>
+</body>
+</html>
